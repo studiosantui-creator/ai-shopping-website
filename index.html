@@ -1,0 +1,361 @@
+﻿<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title id="pageTitle">Asisten Belanja</title>
+
+    <link rel="stylesheet" href="/style.css">
+</head>
+
+<body>
+
+<header class="navbar">
+
+    <a href="#" class="brand">
+        <span class="brand-mark">✦</span>
+        <span id="brandText">Asisten Belanja</span>
+    </a>
+
+    <nav class="nav-links">
+        <a href="#kategori" data-i18n="nav_categories">Kategori</a>
+        <a href="#produk" data-i18n="nav_products">Produk</a>
+        <a href="#assistant" data-i18n="nav_ai">Asisten AI</a>
+    </nav>
+
+    <div class="nav-actions">
+        <button id="languageBtn" class="nav-btn">EN</button>
+        <button id="themeBtn" class="nav-btn">◐</button>
+    </div>
+
+</header>
+
+
+<main>
+
+    <section class="hero">
+
+        <div class="hero-content">
+
+            <span
+                class="eyebrow"
+                data-i18n="hero_eyebrow"
+            >
+                BELANJA LEBIH CERDAS
+            </span>
+
+            <h1 data-i18n="hero_title">
+                Temukan produk yang tepat dengan mudah.
+            </h1>
+
+            <p data-i18n="hero_desc">
+                Jelajahi berbagai kategori, cari produk sesuai kebutuhan,
+                dan gunakan Asisten AI untuk membantu menentukan pilihan.
+            </p>
+
+            <div class="search-box">
+
+                <input
+                    id="searchInput"
+                    type="search"
+                    placeholder="Cari produk..."
+                    data-i18n-placeholder="search_placeholder"
+                >
+
+                <button
+                    id="searchBtn"
+                    class="primary-btn"
+                    data-i18n="search_button"
+                >
+                    Cari
+                </button>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <section
+        id="kategori"
+        class="section"
+    >
+
+        <div class="section-heading">
+
+            <div>
+
+                <span
+                    class="eyebrow"
+                    data-i18n="categories_eyebrow"
+                >
+                    KATEGORI
+                </span>
+
+                <h2 data-i18n="categories_title">
+                    Jelajahi kategori
+                </h2>
+
+            </div>
+
+        </div>
+
+        <div
+            id="categoryGrid"
+            class="category-grid"
+        ></div>
+
+    </section>
+
+
+    <section
+        id="produk"
+        class="section product-section"
+    >
+
+        <div class="section-heading product-heading">
+
+            <div>
+
+                <span
+                    class="eyebrow"
+                    data-i18n="products_eyebrow"
+                >
+                    PRODUK
+                </span>
+
+                <h2 data-i18n="products_title">
+                    Produk pilihan
+                </h2>
+
+                <p id="productResultText"></p>
+
+            </div>
+
+            <div class="filter-bar">
+
+                <select id="subcategorySelect">
+                    <option value="">Subkategori</option>
+                </select>
+                <select id="sortSelect">
+
+                    <option
+                        value="default"
+                        data-i18n="sort_default"
+                    >
+                        Urutan
+                    </option>
+
+                    <option
+                        value="asc"
+                        data-i18n="sort_low"
+                    >
+                        Harga terendah
+                    </option>
+
+                    <option
+                        value="desc"
+                        data-i18n="sort_high"
+                    >
+                        Harga tertinggi
+                    </option>
+
+                </select>
+
+                <input
+                    id="minPrice"
+                    type="number"
+                    min="0"
+                    placeholder="Minimum"
+                    data-i18n-placeholder="min_price"
+                >
+
+                <input
+                    id="maxPrice"
+                    type="number"
+                    min="0"
+                    placeholder="Maksimum"
+                    data-i18n-placeholder="max_price"
+                >
+
+                <button
+                    id="filterBtn"
+                    class="secondary-btn"
+                    data-i18n="filter_button"
+                >
+                    Saring
+                </button>
+
+            </div>
+
+        </div>
+
+        <div
+            id="productGrid"
+            class="product-grid"
+        ></div>
+
+    </section>
+
+
+    <section
+        id="assistant"
+        class="section assistant-section"
+    >
+
+        <div class="assistant-card">
+
+            <div class="assistant-intro">
+
+                <span class="assistant-icon">
+                    ✦
+                </span>
+
+                <div>
+
+                    <span
+                        class="eyebrow"
+                        data-i18n="ai_eyebrow"
+                    >
+                        ASISTEN AI
+                    </span>
+
+                    <h2 data-i18n="assistant_title">
+                        Bingung memilih produk?
+                    </h2>
+
+                    <p data-i18n="assistant_desc">
+                        Jelaskan kebutuhan dan anggaran Anda.
+                        Asisten AI akan membantu berdasarkan produk yang tersedia.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="chat-box">
+
+                <div
+                    id="chatMessages"
+                    class="chat-messages"
+                >
+
+                    <div class="chat-message assistant-message">
+
+                        <span data-i18n="assistant_welcome">
+                            Halo. Jelaskan produk yang sedang Anda cari.
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <div class="chat-input-row">
+
+                    <input
+                        id="chatInput"
+                        type="text"
+                        placeholder="Contoh: Saya mencari mouse untuk bekerja..."
+                        data-i18n-placeholder="chat_placeholder"
+                    >
+
+                    <button
+                        id="chatBtn"
+                        class="primary-btn"
+                        data-i18n="send_button"
+                    >
+                        Kirim
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+</main>
+
+
+<footer class="footer">
+
+    <div>
+
+        <strong id="footerBrand">
+            Asisten Belanja
+        </strong>
+
+        <p data-i18n="footer_text">
+            Asisten belanja untuk membantu Anda menemukan produk yang sesuai.
+        </p>
+
+    </div>
+
+</footer>
+
+
+<script src="/script.js"></script>
+
+</body>
+</html>
+
+<!-- STAGE 4.5 PRODUCT DETAIL MODAL -->
+<div id="productDetailModal" class="product-detail-modal">
+    <div class="product-detail-overlay" onclick="closeProductDetail()"></div>
+
+    <div class="product-detail-card">
+        <button class="product-detail-close" onclick="closeProductDetail()" aria-label="Close">
+            ×
+        </button>
+
+        <div class="product-detail-content">
+            <div class="product-detail-header">
+                <span id="detailMarketplace" class="product-detail-marketplace"></span>
+                <h2 id="detailName"></h2>
+            </div>
+
+            <div class="product-detail-price" id="detailPrice"></div>
+
+            <div class="product-detail-rating">
+                <span>⭐</span>
+                <span id="detailRating"></span>
+            </div>
+
+            <div class="product-detail-meta">
+                <div>
+                    <span class="detail-label">Kategori</span>
+                    <strong id="detailCategory"></strong>
+                </div>
+
+                <div>
+                    <span class="detail-label">Subkategori</span>
+                    <strong id="detailSubcategory"></strong>
+                </div>
+            </div>
+
+            <div class="product-detail-description">
+                <span class="detail-label">Deskripsi</span>
+                <p id="detailDescription"></p>
+            </div>
+
+            <a
+                id="detailProductLink"
+                class="product-detail-button"
+                href="#"
+                target="_blank"
+                rel="noopener noreferrer"
+            >
+                Lihat Produk
+            </a>
+        </div>
+    </div>
+</div>
+
+
+
