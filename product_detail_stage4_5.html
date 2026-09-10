@@ -1,0 +1,51 @@
+﻿<!-- STAGE 4.5 PRODUCT DETAIL MODAL -->
+<div id="productDetailModal" class="product-detail-modal">
+    <div class="product-detail-overlay" onclick="closeProductDetail()"></div>
+
+    <div class="product-detail-card">
+        <button class="product-detail-close" onclick="closeProductDetail()" aria-label="Close">
+            ×
+        </button>
+
+        <div class="product-detail-content">
+            <div class="product-detail-header">
+                <span id="detailMarketplace" class="product-detail-marketplace"></span>
+                <h2 id="detailName"></h2>
+            </div>
+
+            <div class="product-detail-price" id="detailPrice"></div>
+
+            <div class="product-detail-rating">
+                <span>⭐</span>
+                <span id="detailRating"></span>
+            </div>
+
+            <div class="product-detail-meta">
+                <div>
+                    <span class="detail-label">Kategori</span>
+                    <strong id="detailCategory"></strong>
+                </div>
+
+                <div>
+                    <span class="detail-label">Subkategori</span>
+                    <strong id="detailSubcategory"></strong>
+                </div>
+            </div>
+
+            <div class="product-detail-description">
+                <span class="detail-label">Deskripsi</span>
+                <p id="detailDescription"></p>
+            </div>
+
+            <a
+                id="detailProductLink"
+                class="product-detail-button"
+                href="#"
+                target="_blank"
+                rel="noopener noreferrer"
+            >
+                Lihat Produk
+            </a>
+        </div>
+    </div>
+</div>

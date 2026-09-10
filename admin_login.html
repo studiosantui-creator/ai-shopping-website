@@ -1,0 +1,31 @@
+﻿<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Login</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;display:flex;align-items:center;justify-content:center;background:#f6f6f3;color:#111;font-family:Arial,sans-serif}
+.login{width:min(420px,calc(100% - 32px));background:#fff;border:1px solid #e5e5e0;border-radius:18px;padding:28px}
+h1{margin:0 0 8px}
+p{color:#777}
+label{display:block;margin:16px 0 7px;font-size:14px}
+input{width:100%;padding:12px;border:1px solid #ddd;border-radius:10px;font:inherit}
+button{width:100%;margin-top:20px;padding:12px;border:0;border-radius:10px;background:#111;color:#fff;font:inherit;cursor:pointer}
+</style>
+</head>
+<body>
+<div class="login">
+<h1>Admin Login</h1>
+<p>Masuk untuk mengelola Product Assistant.</p>
+<form method="post" action="/admin/login">
+<label>Username</label>
+<input name="username" required autocomplete="username">
+<label>Password</label>
+<input name="password" type="password" required autocomplete="current-password">
+<button type="submit">Masuk</button>
+</form>
+</div>
+</body>
+</html>
