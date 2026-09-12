@@ -1,6 +1,8 @@
 ﻿from flask import Flask, request, jsonify, send_from_directory, session, redirect, url_for
 from flask_cors import CORS
 import sqlite3
+import psycopg
+from psycopg.rows import dict_row
 import requests
 
 MODEL = "qwen2.5:3b"
@@ -16,13 +18,13 @@ OLLAMA_URL = "http://localhost:11434/api/chat"
 MODEL = "qwen2.5:3b"
 
 app = Flask(__name__, static_folder=".")
-app.secret_key = os.environ.get("ADMIN_SECRET_KEY", "local-admin-secret-change-later")
+app.secret_key = os.environ.get("ADMIN_SECRET_KEY")
 
 ADMIN_USER = os.environ.get("ADMIN_USER", "admin")
 ADMIN_PASSWORD = os.environ.get("ADMIN_PASSWORD")
 
 if not ADMIN_PASSWORD:
-    ADMIN_PASSWORD = "admin123"
+    raise RuntimeError("ADMIN_PASSWORD environment variable belum diset")
 
 
 def validate_product_input(data):
@@ -154,10 +156,92 @@ CORS(app)
 # DATABASE
 # ============================================================
 
+DATABASE_URL = os.environ.get("DATABASE_URL", "").strip()
+
+
+class DBCursor:
+    def __init__(self, cursor, is_postgres):
+        self._cursor = cursor
+        self.is_postgres = is_postgres
+
+    def execute(self, sql, params=()):
+        if self.is_postgres:
+            sql = sql.replace("?", "%s")
+
+        if params:
+            self._cursor.execute(sql, params)
+        else:
+            self._cursor.execute(sql)
+
+        return self
+
+    def executemany(self, sql, seq):
+        if self.is_postgres:
+            sql = sql.replace("?", "%s")
+
+        self._cursor.executemany(sql, seq)
+        return self
+
+    def fetchone(self):
+        return self._cursor.fetchone()
+
+    def fetchall(self):
+        return self._cursor.fetchall()
+
+    def __getattr__(self, name):
+        return getattr(self._cursor, name)
+
+
+class DBConnection:
+    def __init__(self, conn, is_postgres=False):
+        self._conn = conn
+        self.is_postgres = is_postgres
+
+    def execute(self, sql, params=()):
+        if self.is_postgres:
+            sql = sql.replace("?", "%s")
+
+        if params:
+            return self._conn.execute(sql, params)
+
+        return self._conn.execute(sql)
+
+    def executemany(self, sql, seq):
+        if self.is_postgres:
+            sql = sql.replace("?", "%s")
+
+        return self._conn.executemany(sql, seq)
+
+    def cursor(self):
+        return DBCursor(
+            self._conn.cursor(),
+            self.is_postgres
+        )
+
+    def commit(self):
+        return self._conn.commit()
+
+    def rollback(self):
+        return self._conn.rollback()
+
+    def close(self):
+        return self._conn.close()
+
+    def __getattr__(self, name):
+        return getattr(self._conn, name)
+
+
 def get_db():
+    if DATABASE_URL:
+        conn = psycopg.connect(
+            DATABASE_URL,
+            row_factory=dict_row
+        )
+        return DBConnection(conn, True)
+
     conn = sqlite3.connect(DB_PATH)
     conn.row_factory = sqlite3.Row
-    return conn
+    return DBConnection(conn, False)
 
 
 def get_products():
@@ -1096,7 +1180,7 @@ def admin_set_affiliate(product_id):
             "error": "is_affiliate harus bernilai true/false"
         }), 400
 
-    conn = sqlite3.connect(DB_PATH)
+    conn = get_db()
     cur = conn.cursor()
 
     cur.execute(
